@@ -35,21 +35,7 @@ namespace CtCI
             {
                 if (_head1 + 1 == _start2)
                 {
-                    int increase = _start2 - _start1;
-                    var newArray = new T[_array.Length + increase];
-                    for (int i = _start1; i < _start2; i++)
-                    {
-                        newArray[i] = _array[i];
-                    }
-                    for (int i = _start2; i < _array.Length; i++)
-                    {
-                        newArray[i + increase] = _array[i];
-                    }
-                    _head2 += increase;
-                    _head3 += increase;
-                    _start2 += increase;
-                    _start3 += increase;
-                    _array = newArray;
+                    ExpandArray(_head1 + 1, _start2 - _start1);
                 }
                 _head1 += 1;
                 _array[_head1] = item;
@@ -79,23 +65,10 @@ namespace CtCI
             {
                 if (_head2 + 1 == _start3)
                 {
-                    int increase = _start3 - _start2;
-                    var newArray = new T[_array.Length + increase];
-                    for (int i = _start1; i < _start3; i++)
-                    {
-                        newArray[i] = _array[i];
-                    }
-                    for (int i = _start3; i < _array.Length; i++)
-                    {
-                        newArray[i + increase] = _array[i];
-                    }
-                    _head3 += increase;
-                    _start3 += increase;
-                    _array = newArray;
+                    ExpandArray(_head2 + 1, _start3 - _start2);
                 }
                 _head2 += 1;
                 _array[_head2] = item;
-
             }
 
             public T Pop2()
@@ -122,13 +95,7 @@ namespace CtCI
             {
                 if (_head3 + 1 == _array.Length)
                 {
-                    int increase = _array.Length - _start3;
-                    var newArray = new T[_array.Length + increase];
-                    for (int i = _start1; i < _array.Length; i++)
-                    {
-                        newArray[i] = _array[i];
-                    }
-                    _array = newArray;
+                    ExpandArray(_head3 + 1, _array.Length - _start3);
                 }
                 _head3 += 1;
                 _array[_head3] = item;
@@ -155,7 +122,27 @@ namespace CtCI
                 return _head3 >= _array.Length;
             }
 
-            private void ExpandArray(
+            private void ExpandArray(int expansionPoint, int expansionAmount)
+            {
+                int newSize = _array.Length + expansionAmount;
+                var newArray = new T[newSize];
+                for (int i = 0; i < expansionPoint; i++)
+                {
+                    newArray[i] = _array[i];
+                }
+                for (int i = expansionPoint; i < _array.Length; i++)
+                {
+                    newArray[i + expansionAmount] = _array[i];
+                }
+                _array = newArray;
+
+                // We could improve on this this a bit, doing a sort of binary search, but this is fine
+                if (_head1 >= expansionPoint) _head1 += expansionAmount;
+                if (_head2 >= expansionPoint) _head2 += expansionAmount;
+                if (_head3 >= expansionPoint) _head3 += expansionAmount;
+                if (_start2 >= expansionPoint) _start2 += expansionAmount;
+                if (_start3 >= expansionPoint) _start3 += expansionAmount;
+            }
         }
         #endregion
 
