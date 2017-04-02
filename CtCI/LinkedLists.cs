@@ -198,6 +198,31 @@ namespace CtCI
         // Implement a function to check if a linked list is a palindrome.
         // Find the mid-point using a fast runner and a slow runner. While navigating to the mid point, add what you see to a stack.
         // Then, use the half-runner to run the last half of the list, and ensure that whatever you pop off the stack matches as you go.
+        public static bool IsPalindrome(Node n)
+        {
+            if (n?.Next == null) return true;
+
+            var seen = new Stack<int>();
+            Node fast = n;
+            Node slow = n;
+
+            seen.Push(slow.Value);
+            while (fast.Next != null && fast.Next.Next != null)
+            {
+                slow = slow.Next;
+                fast = fast.Next.Next;
+                seen.Push(slow.Value);
+            }
+            if (fast.Next != null) slow = slow.Next;
+
+            while (seen.Count > 0)
+            {
+                int current = seen.Pop();
+                if (slow.Value != current) return false;
+                slow = slow.Next;
+            }
+            return true;
+        }
         #endregion
 
         #region 2.7
@@ -241,6 +266,35 @@ namespace CtCI
                 }
                 return (n, i);
             }
+        }
+        #endregion
+
+        #region 2.8
+        // Given a linked list, determine if it has a cycle, and if it does, return the entry point of the cycle
+        public static Node GetEntryPointOfCorruptedList(Node n)
+        {
+            Node fast = n;
+            Node slow = n;
+
+            if (n.Next == null)
+            {
+                return null;
+            }
+
+            do
+            {
+                if (n.Next.Next == null) return null;
+                slow = slow.Next;
+                fast = fast.Next.Next;
+            } while (fast != slow);
+
+            slow = n;
+            while (fast != slow)
+            {
+                fast = fast.Next;
+                slow = slow.Next;
+            }
+            return slow;
         }
         #endregion
     }

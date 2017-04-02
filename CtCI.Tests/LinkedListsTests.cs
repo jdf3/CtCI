@@ -111,5 +111,46 @@ namespace CtCI.Tests
 
             Assert.AreEqual(12304 + 789, SumBigEndian(l1, l2));
         }
+
+        [TestMethod]
+        public void IsPalindromeTests()
+        {
+            var l1 = new Node { Value = 1 };
+            l1.Append(new Node { Value = 2 });
+            l1.Append(new Node { Value = 3 });
+            l1.Append(new Node { Value = 2 });
+            l1.Append(new Node { Value = 1 });
+
+            Assert.IsTrue(IsPalindrome(l1));
+
+            var l2 = new Node { Value = 1 };
+            l2.Append(new Node { Value = 2 });
+            l2.Append(new Node { Value = 2 });
+            l2.Append(new Node { Value = 1 });
+
+            Assert.IsTrue(IsPalindrome(l2));
+
+            var l3 = new Node { Value = 1 };
+            l3.Append(new Node { Value = 2 });
+            l3.Append(new Node { Value = 2 });
+
+            Assert.IsFalse(IsPalindrome(l3));
+        }
+
+        [TestMethod]
+        public void GetEntryPointOfCorruptedListTest()
+        {
+            var n = new Node();
+            n.Append(new Node());
+            n.Append(new Node());
+            n.Append(new Node());
+            n.Append(n);
+
+            var list = new Node();
+            list.Append(new Node());
+            list.Append(n);
+
+            Assert.AreEqual(n, GetEntryPointOfCorruptedList(list));
+        }
     }
 }
