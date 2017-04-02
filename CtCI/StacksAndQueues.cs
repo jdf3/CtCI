@@ -154,6 +154,8 @@ namespace CtCI
             {
                 return _head3 >= _array.Length;
             }
+
+            private void ExpandArray(
         }
         #endregion
 
@@ -211,7 +213,7 @@ namespace CtCI
         #endregion
 
         #region 3.3
-        //Implement a "stack of plates"
+        // Implement a "stack of plates"
         public class StackOfPlates<T>
         {
             private const int Capacity = 4;
@@ -325,6 +327,33 @@ namespace CtCI
         #region 3.5
         // Write a program to sort a stack such that the smallest items are on top.
         // You can use an additional temporary stack, but you may not copy the elements into any other data structure.
+        public static void StackSort(Stack<int> stack)
+        {
+            var tempStack = new Stack<int>();
+
+            while (stack.Count > 0)
+            {
+                int heldValue = stack.Pop();
+                int pushed = 0;
+                while (tempStack.Count > 0 && tempStack.Peek() >= heldValue)
+                {
+                    stack.Push(tempStack.Pop());
+                    pushed++;
+                }
+
+                tempStack.Push(heldValue);
+
+                for (int i = 0; i < pushed; i++)
+                {
+                    tempStack.Push(stack.Pop());
+                }
+            }
+
+            while (tempStack.Count > 0)
+            {
+                stack.Push(tempStack.Pop());
+            }
+        }
         #endregion
 
         #region 3.6
@@ -333,6 +362,62 @@ namespace CtCI
         // they would prefer a dog or a cat (and will receive the oldest animal of that type). They cannot select which
         // specific animal they would like. Create the data structures to maintain this system and implement operations
         // such as enqueue, dequeueAny, dequeueDog, and dequeueCat. You may use the built-in LinkedList data structure.
+        public class AnimalShelter
+        {
+            public enum Animal
+            {
+                Dog,
+                Cat
+            }
+
+            private int _counter = 0;
+            private readonly Queue<(string, int)> _catQueue = new Queue<ValueTuple<string, int>>();
+            private readonly Queue<(string, int)> _dogQueue = new Queue<ValueTuple<string, int>>();
+
+            public void Enqueue(Animal animal, string name)
+            {
+                if (animal == Animal.Cat)
+                {
+                    _catQueue.Enqueue((name, _counter));
+                }
+                else
+                {
+                    _dogQueue.Enqueue((name, _counter));
+                }
+                _counter++;
+            }
+
+            public string DequeueAny()
+            {
+                if (_catQueue.Count == 0)
+                {
+                    if (_dogQueue.Count == 0)
+                    {
+                        throw new InvalidOperationException();
+                    }
+                    return _dogQueue.Dequeue().Item1;
+                }
+                if (_dogQueue.Count == 0)
+                {
+                    return _catQueue.Dequeue().Item1;
+                }
+
+                (string catName, int catStamp) = _catQueue.Peek();
+                (string dogName, int dogStamp) = _dogQueue.Peek();
+
+                return catStamp < dogStamp ? _catQueue.Dequeue().Item1 : _dogQueue.Dequeue().Item1;
+            }
+
+            public string DequeueDog()
+            {
+                return _dogQueue.Dequeue().Item1;
+            }
+
+            public string DequeueCat()
+            {
+                return _catQueue.Dequeue().Item1;
+            }
+        }
         #endregion
     }
 }

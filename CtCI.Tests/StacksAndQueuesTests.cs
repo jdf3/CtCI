@@ -132,5 +132,37 @@ namespace CtCI.Tests
 
             Assert.AreEqual(4, queue.Peek());
         }
+
+        [TestMethod]
+        public void StackSortTests()
+        {
+            var stack = new Stack<int>();
+            stack.Push(4);
+            stack.Push(2);
+            stack.Push(3);
+            stack.Push(1);
+
+            StackSort(stack);
+
+            Assert.AreEqual(1, stack.Pop());
+            Assert.AreEqual(2, stack.Pop());
+            Assert.AreEqual(3, stack.Pop());
+            Assert.AreEqual(4, stack.Pop());
+        }
+
+        [TestMethod]
+        public void AnimalShelterTests()
+        {
+            var animalShelter = new AnimalShelter();
+            animalShelter.Enqueue(AnimalShelter.Animal.Cat, "Sadie");
+            animalShelter.Enqueue(AnimalShelter.Animal.Dog, "Tucker");
+            animalShelter.Enqueue(AnimalShelter.Animal.Cat, "Snickers");
+            animalShelter.Enqueue(AnimalShelter.Animal.Dog, "Cooper");
+
+            Assert.AreEqual("Sadie", animalShelter.DequeueAny());
+            Assert.AreEqual("Snickers", animalShelter.DequeueCat());
+            Assert.AreEqual("Tucker", animalShelter.DequeueDog());
+            Assert.AreEqual("Cooper", animalShelter.DequeueAny());
+        }
     }
 }
