@@ -92,36 +92,20 @@ namespace CtCI
         #region 4.3
         /* Given a binary tree, design an algorithm which creates a linked list of all the nodes at each depth
          * (e.g., if you have a tree with depth D, you'll have D linked lists) */
-        // Blah. This feels bad. I know this is basically DFS... either way, it's O(N) space and O(N) time, where O(N)
-        // is the number of nodes, which is best-case... but there's still a constant we should be able to divide by two or so...
-        // I could probably write this so that we don't have this issue 
+        // Hooray! I improved this drastically - seems constant >=10x speedup! :)
         public static List<List<int>> GetLevels(BSTNode root)
         {
-            List<(int, int)> valuesAndDepths = GetValuesAndDepths(root, 0);
-
-            int maxLevel = valuesAndDepths.Max().Item1;
-
-            var lists = new List<List<int>>(maxLevel + 1);
-            for (int i = 0; i < maxLevel + 1; i++)
-            {
-                lists.Add(new List<int>());
-            }
-
-            foreach ((int depth, int value) in valuesAndDepths)
-            {
-                lists[depth].Add(value);
-            }
-
-            return lists;
+            var pairs = new List<List<int>>();
+            AddValuesDFS(root, 0);
+            return pairs;
                 
-            List<(int, int)> GetValuesAndDepths(BSTNode r, int depth)
+            void AddValuesDFS(BSTNode r, int depth)
             {
-                var pairs = new List<(int, int)> {(depth, r.Value)};
+                if (pairs.Count <= depth) pairs.Add(new List<int>());
+                pairs[depth].Add(r.Value);
 
-                if (r.Left != null) pairs.AddRange(GetValuesAndDepths(r.Left, depth + 1));
-                if (r.Right != null) pairs.AddRange(GetValuesAndDepths(r.Right, depth + 1));
-
-                return pairs;
+                if (r.Left != null) AddValuesDFS(r.Left, depth + 1);
+                if (r.Right != null) AddValuesDFS(r.Right, depth + 1);
             }
         }
         #endregion
