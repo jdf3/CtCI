@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -75,6 +76,70 @@ namespace CtCI.Tests
 
             Assert.AreEqual(4, levels[0][0]);
             Assert.AreEqual(7, levels[2][3]);
+        }
+
+        [TestMethod]
+        public void IsBalancedTests()
+        {
+            var bst = new BSTNode { Left = new BSTNode { Left = new BSTNode() } };
+
+            Assert.IsFalse(IsBalanced(bst), "1");
+
+            bst.Right = new BSTNode();
+
+            Assert.IsTrue(IsBalanced(bst), "2");
+
+            var bst2 = new BSTNode() { Right = bst };
+
+            Assert.IsFalse(IsBalanced(bst2), "3");
+        }
+
+        [TestMethod]
+        public void IsBinarySearchTreeTests()
+        {
+            var array = new int[]
+            {
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+            };
+
+            BSTNode bst = MakeBSTFromSortedArray(array);
+
+            Assert.IsTrue(IsBinarySearchTree(bst));
+
+            array[3] = 6;
+            bst = MakeBSTFromSortedArray(array);
+
+            Assert.IsFalse(IsBinarySearchTree(bst));
+        }
+
+        [TestMethod]
+        public void GetSuccessorTests()
+        {
+            var bst = new ParentBSTNode()
+            {
+                Value = 4
+            };
+            var node2 = new ParentBSTNode()
+            {
+                Value = 6,
+                Parent = bst
+            };
+            bst.Right = node2;
+            var node3 = new ParentBSTNode()
+            {
+                Value = 5,
+                Parent = node2
+            };
+            node2.Left = node3;
+
+            Assert.AreEqual(node2, GetSuccessor(node3));
+            Assert.AreEqual(node3, GetSuccessor(bst));
         }
     }
 }
