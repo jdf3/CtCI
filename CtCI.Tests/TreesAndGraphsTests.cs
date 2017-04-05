@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -140,6 +141,98 @@ namespace CtCI.Tests
 
             Assert.AreEqual(node2, GetSuccessor(node3));
             Assert.AreEqual(node3, GetSuccessor(bst));
+        }
+
+        [TestMethod]
+        public void GetOrderTests()
+        {
+            var projects = new List<string>
+            {
+                "a", "b", "c", "d", "e", "f"
+            };
+            var dependencies = new List<(string, string)>
+            {
+                ("a", "b"), ("b", "c"), ("c", "d"), ("d", "e"), ("e", "f")
+            };
+
+            IList<string> buildOrder = GetOrder(projects, dependencies);
+
+            Assert.AreEqual("a", buildOrder[0]);
+            Assert.AreEqual("f", buildOrder[5]);
+
+            dependencies.Add(("f", "a"));
+
+            buildOrder = GetOrder(projects, dependencies);
+
+            Assert.IsNull(buildOrder);
+        }
+
+        [TestMethod]
+        public void FirstCommonAncestorTests()
+        {
+            var a = new BSTNode() { Value = 1 };
+            var b = new BSTNode() { Value = 2 };
+            var c = new BSTNode() { Value = 3 };
+            var d = new BSTNode() { Value = 4 };
+            var e = new BSTNode() { Value = 5 };
+            var f = new BSTNode() { Value = 6 };
+            var g = new BSTNode() { Value = 7 };
+            a.Left = b;
+            a.Right = c;
+            b.Left = d;
+            b.Right = e;
+            c.Left = f;
+            c.Right = g;
+
+            Assert.AreEqual(a, FirstCommonAncestor(a, d, g), "simple");
+            Assert.AreEqual(c, FirstCommonAncestor(a, f, g), "simple 2");
+            Assert.AreEqual(a, FirstCommonAncestor(a, a, f), "includes root");
+            Assert.AreEqual(a, FirstCommonAncestor(a, b, g), "simple 3");
+        }
+
+        [TestMethod]
+        public void GetGeneratingArraysTests()
+        {
+            var root = new BSTNode
+            {
+                Value = 2,
+                Left = new BSTNode { Value = 1 },
+                Right = new BSTNode { Value = 3 }
+            };
+
+            var generatingArrays = new List<int[]>(GetGeneratingArrays(root));
+
+            Assert.AreEqual(2, generatingArrays.Count);
+            Assert.AreEqual(2, generatingArrays[0][0]);
+            Assert.AreEqual(1, generatingArrays[0][1]);
+            Assert.AreEqual(3, generatingArrays[0][2]);
+
+            Assert.AreEqual(2, generatingArrays[1][0]);
+            Assert.AreEqual(3, generatingArrays[1][1]);
+            Assert.AreEqual(1, generatingArrays[1][2]);
+
+            var root2 = new BSTNode
+            {
+                Value = 2,
+                Left = new BSTNode
+                {
+                    Value = 2
+                },
+                Right = new BSTNode
+                {
+                    Value = 4,
+                    Left = new BSTNode
+                    {
+                        Value = 3
+                    },
+                    Right = new BSTNode
+                    {
+                        Value = 5
+                    }
+                }
+            };
+
+            Assert.AreEqual(8, GetGeneratingArrays(root2).Count());
         }
     }
 }
