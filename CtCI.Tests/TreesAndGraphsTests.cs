@@ -216,7 +216,7 @@ namespace CtCI.Tests
                 Value = 2,
                 Left = new BSTNode
                 {
-                    Value = 2
+                    Value = 1
                 },
                 Right = new BSTNode
                 {
@@ -243,7 +243,7 @@ namespace CtCI.Tests
                 Value = 2,
                 Left = new BSTNode
                 {
-                    Value = 2
+                    Value = 1
                 },
                 Right = new BSTNode
                 {
@@ -272,9 +272,36 @@ namespace CtCI.Tests
 
             Assert.IsTrue(ContainsSubtree(root1, root2));
 
-            root2.Right = new BSTNode {Value = 6};
+            root2.Right = new BSTNode { Value = 6 };
 
             Assert.IsFalse(ContainsSubtree(root1, root2));
+        }
+
+        [TestMethod]
+        public void CountPathsWithSumTests()
+        {
+            var root = new BSTNode
+            {
+                Value = 4,
+                Left = new BSTNode
+                {
+                    Value = 0
+                },
+                Right = new BSTNode
+                {
+                    Value = -2,
+                    Left = new BSTNode
+                    {
+                        Value = 2
+                    },
+                    Right = new BSTNode
+                    {
+                        Value = 1
+                    }
+                }
+            };
+
+            Assert.AreEqual(3, CountPathsWithSum(root, 4));
         }
     }
 }

@@ -383,16 +383,14 @@ namespace CtCI
 
                 if (leftPos < left.Length)
                 {
-                    int leftFirst = left[leftPos];
-                    current.AddLast(leftFirst);
+                    current.AddLast(left[leftPos]);
                     arrays = arrays.Concat(CombineLists(left, leftPos + 1, right, rightPos, current));
                     current.RemoveLast();
                 }
 
                 if (rightPos < right.Length)
                 {
-                    int rightFirst = right[rightPos];
-                    current.AddLast(rightFirst);
+                    current.AddLast(right[rightPos]);
                     arrays = arrays.Concat(CombineLists(left, leftPos, right, rightPos + 1, current));
                     current.RemoveLast();
                 }
@@ -426,7 +424,36 @@ namespace CtCI
          * find and delete, has a method getRandomNode() which returns a random node from the tree.
          * All nodes should be equally likely to be chosen. Design and implement an algorithm for
          * getRandomNode, and explain how you would implement the rest of the methods. */
+        // TODO: this is a good way remember how binary search trees work (since i'll need to implement rebalancing myself),
+        // TODO: but i'm going to move on for now.
+        public class BSTWithRandom
+        {
+            public int Value { get; set; }
+            public int Descendants { get; private set; }
+            public BSTWithRandom Parent { get; set; }
+            public BSTWithRandom Left { get; set; }
+            public BSTWithRandom Right { get; set; }
 
+            public void Insert(int value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public BSTWithRandom Find(int value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Delete(BSTWithRandom node)
+            {
+                throw new NotImplementedException();
+            }
+
+            public BSTWithRandom GetRandomNode()
+            {
+                throw new NotImplementedException();
+            }
+        }
         #endregion
 
         #region 4.12
@@ -434,7 +461,36 @@ namespace CtCI
          * positive or negative). Design an algorithm to count the number of paths that sum to a
          * given value. The path does not need to start or end at the root or a leaf, but it must
          * go downwards (traveling only from parent nodes to child nodes). */
+        public static int CountPathsWithSum(BSTNode root, int targetSum)
+        {
+            int count = 0;
+            CountPathsWithSum(root, 0, new Dictionary<int, int> { { 0, 1 } });
+            return count;
 
+            void CountPathsWithSum(BSTNode current, int runningSum, Dictionary<int, int> partialSumsToCounts)
+            {
+                if (current == null) return;
+
+                runningSum += current.Value;
+                if (partialSumsToCounts.TryGetValue(targetSum - runningSum, out int numGoodPartials))
+                {
+                    count += numGoodPartials;
+                }
+
+                if (partialSumsToCounts.ContainsKey(runningSum))
+                {
+                    partialSumsToCounts[runningSum] += 1;
+                }
+                else
+                {
+                    partialSumsToCounts[runningSum] = 1;
+                }
+
+                CountPathsWithSum(current.Left, runningSum, partialSumsToCounts);
+                CountPathsWithSum(current.Right, runningSum, partialSumsToCounts);
+                partialSumsToCounts[runningSum] -= 1;
+            }
+        }
         #endregion
     }
 }
