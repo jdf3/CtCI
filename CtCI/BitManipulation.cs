@@ -24,7 +24,7 @@ namespace CtCI
         #region 5.2
         /* Given a real number between 0 and 1 (e.g., 0.72) that is passed in as a double, print the binary representation.
          * If the number cannot be represented accurately in binary with at most 32 characters, print "ERROR". */
-        // TODO: look at solutions/hints - i didn't exactly use any bit manipulation here..
+        // TODO: look at solutions/hints - i didn't exactly use any bit manipulation here...
         public static string GetBinaryRepresentation(double number)
         {
             if (number <= 0 || number >= 1) return "ERROR";
@@ -42,10 +42,58 @@ namespace CtCI
                 {
                     stringRep.Append("0");
                 }
+                number *= 2;
             }
             if (stringRep.Length == 32 && number != 0) return "ERROR";
             return stringRep.ToString();
         }
+        #endregion
+
+        #region 5.3
+        /* You have an integer and you can flip exactly one bit from a 0 to a 1.
+         * Write code to find the length of the longest sequence of 1s you could create. */
+        public static int GetLongestSequenceAfterFlip(uint number)
+        {
+            int best = 1;
+
+            int startPos = 31;
+
+            while (startPos >= 0)
+            {
+                while (((number >> startPos) & 1) != 1 && startPos >= 0)
+                {
+                    startPos--;
+                }
+                if (startPos <= 0) return best;
+
+                int firstZeroPos = startPos - 1;
+
+                while (((number >> firstZeroPos) & 1) != 0 && firstZeroPos >= 0)
+                {
+                    firstZeroPos--;
+                }
+                if (firstZeroPos < 0)
+                {
+                    return startPos == 31 ? Math.Max(best, startPos + 1) : Math.Max(best, startPos + 2);
+                }
+
+                int endPos = firstZeroPos - 1;
+
+                while (((number >> endPos) & 1) != 0 && endPos >= 0)
+                {
+                    endPos--;
+                }
+                best = Math.Max(best, startPos - endPos);
+                startPos = endPos;
+            }
+
+            return best;
+        }
+        #endregion
+
+        #region 5.4
+        /* Given a positive integer, print the next smallest and the next largest number
+         * that have the same number of 1 bits in their binary representation */
         #endregion
     }
 }

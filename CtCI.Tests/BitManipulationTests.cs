@@ -18,7 +18,19 @@ namespace CtCI.Tests
         {
             Assert.AreEqual("ERROR", GetBinaryRepresentation(0.3));
             Assert.AreEqual("0.1", GetBinaryRepresentation(0.5));
-            Assert.AreEqual("0.0101", GetBinaryRepresentation(0.25 + 0.0625));
+            Assert.AreEqual("0.0101", GetBinaryRepresentation(0.3125));
+        }
+
+        [TestMethod]
+        public void GetLongestSequenceAfterFlipTests()
+        {
+            Assert.AreEqual(32, GetLongestSequenceAfterFlip(0b1111_1111_1111_1111_1111_1111_1111_1111));
+            Assert.AreEqual(32, GetLongestSequenceAfterFlip(0b1111_1111_1111_1110_1111_1111_1111_1111));
+            Assert.AreEqual(32, GetLongestSequenceAfterFlip(0b0111_1111_1111_1111_1111_1111_1111_1111));
+            Assert.AreEqual(32, GetLongestSequenceAfterFlip(0b1111_1111_1111_1111_1111_1111_1111_1110));
+            Assert.AreEqual(31, GetLongestSequenceAfterFlip(0b0111_1111_1111_1111_1111_1111_1111_1110));
+            Assert.AreEqual(25, GetLongestSequenceAfterFlip(0b0000_1111_1111_1111_1111_1111_1111_0000));
+            Assert.AreEqual(24, GetLongestSequenceAfterFlip(0b0000_1111_1111_1110_1111_1111_1111_0000));
         }
     }
 }
