@@ -234,5 +234,47 @@ namespace CtCI.Tests
 
             Assert.AreEqual(8, GetGeneratingArrays(root2).Count());
         }
+
+        [TestMethod]
+        public void ContainsSubtreeAtTests()
+        {
+            var root1 = new BSTNode
+            {
+                Value = 2,
+                Left = new BSTNode
+                {
+                    Value = 2
+                },
+                Right = new BSTNode
+                {
+                    Value = 4,
+                    Left = new BSTNode
+                    {
+                        Value = 3
+                    },
+                    Right = new BSTNode
+                    {
+                        Value = 5
+                    }
+                }
+            };
+
+            var root2 = new BSTNode
+            {
+                Value = 4,
+                Left = new BSTNode { Value = 3 },
+                Right = new BSTNode { Value = 5 }
+            };
+
+            Assert.IsTrue(ContainsSubtree(root1, root2));
+
+            root2.Right = null;
+
+            Assert.IsTrue(ContainsSubtree(root1, root2));
+
+            root2.Right = new BSTNode {Value = 6};
+
+            Assert.IsFalse(ContainsSubtree(root1, root2));
+        }
     }
 }

@@ -404,7 +404,21 @@ namespace CtCI
         #region 4.10
         /* T1 and T2 are two very large binary trees, with T1 much bigger than T2.
          * Create an algorithm to determine if T2 is a subtree of T1. */
-        
+        public static bool ContainsSubtree(BSTNode t1, BSTNode t2)
+        {
+            if (t1 == null) return false;
+            if (t1.Value == t2.Value && ContainsSubtreeAt(t1, t2)) return true;
+            return ContainsSubtree(t1.Left, t2) || ContainsSubtree(t1.Right, t2);
+
+            bool ContainsSubtreeAt(BSTNode big, BSTNode small)
+            {
+                if (small == null) return true;
+                if (big == null) return false;
+
+                if (big.Value != small.Value) return false;
+                return ContainsSubtreeAt(big.Left, small.Left) && ContainsSubtreeAt(big.Right, small.Right);
+            }
+        }
         #endregion
 
         #region 4.11
