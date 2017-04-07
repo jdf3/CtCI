@@ -32,5 +32,18 @@ namespace CtCI.Tests
             Assert.AreEqual(25, GetLongestSequenceAfterFlip(0b0000_1111_1111_1111_1111_1111_1111_0000));
             Assert.AreEqual(24, GetLongestSequenceAfterFlip(0b0000_1111_1111_1110_1111_1111_1111_0000));
         }
+
+        [TestMethod]
+        public void GetNextWithSameBitsTests()
+        {
+            Assert.AreEqual((uint)0b101000, GetNextWithSameBits((uint)0b100100), "case 1");
+            Assert.AreEqual((uint)0b110001, GetNextWithSameBits((uint)0b101100), "case 2");
+        }
+
+        [TestMethod]
+        public void CountBitsTests()
+        {
+            Assert.AreEqual(24, CountBits(0b1111_1111_0000_1111_0000_1111_1111_1111));
+        }
     }
 }

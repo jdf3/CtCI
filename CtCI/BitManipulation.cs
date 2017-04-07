@@ -13,7 +13,7 @@ namespace CtCI
          * You would not, for example, have j = 3 and i = 2, because M could not fully fit between bit 3 and bit 2. */
         public static uint FitInto(uint n, uint m, int i, int j)
         {
-            uint mask = (uint) (1 << j) - 1;
+            uint mask = (uint)(1 << j) - 1;
             m &= mask;
             m <<= i;
             n |= m;
@@ -94,6 +94,47 @@ namespace CtCI
         #region 5.4
         /* Given a positive integer, print the next smallest and the next largest number
          * that have the same number of 1 bits in their binary representation */
+        // I'll just do the next, since the previous is similar
+        public static uint GetNextWithSameBits(uint number)
+        {
+            int seqStart = 0;
+            while (((number >> seqStart) & 1) == 0)
+            {
+                seqStart++;
+            }
+
+            int pos = seqStart;
+            while (!(((number >> pos) & 1) == 1 && ((number >> (pos + 1)) & 1) == 0))
+            {
+                pos++;
+            }
+
+            number += (uint)(1 << (pos + 1)) - (uint)(1 << pos);
+
+            uint bitsToShift = ((uint) (1 << pos) - 1) & number;
+
+            number -= bitsToShift;
+            uint shiftedBits = bitsToShift >> seqStart;
+
+            uint mask = ~(uint) 0 - (uint) (1 << pos) - 1;
+            number &= mask;
+            number += shiftedBits;
+
+            return number;
+        }
+
+        public static int CountBits(uint number)
+        {
+            int bits = 0;
+
+            while (number != 0)
+            {
+                bits += (int)(number & 1);
+                number >>= 1;
+            }
+
+            return bits;
+        }
         #endregion
     }
 }
