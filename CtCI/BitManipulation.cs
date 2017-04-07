@@ -138,6 +138,10 @@ namespace CtCI
         }
         #endregion
 
+        #region 5.5
+        /* This tests whether something is a square. */
+        #endregion
+
         #region 5.6
         /* Write a function to determine the number of bits you would need to flip to convert integer A to integer B */
         public static int BitFlipsUntilEquality(uint a, uint b)
@@ -152,6 +156,19 @@ namespace CtCI
             }
             return flips;
         }
+        #endregion
+
+        #region 5.7
+        /* Write a program to swap odd and even bits in an integer with as few instructions as possible
+         * (e.g., bit 0 and bit 1 are swapped, bit 2 and bit 3 are swapped, and so on). */
+        public static uint SwapParityBits(uint number)
+        {
+            return ((number & 0x55555555) << 1 & (number & 0xAAAAAAAA) << 1);
+        }
+        #endregion
+
+        #region 5.8
+        /* I don't feel this question is really worth my time... */
         #endregion
     }
 }
