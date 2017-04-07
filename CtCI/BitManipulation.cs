@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace CtCI
@@ -111,12 +112,12 @@ namespace CtCI
 
             number += (uint)(1 << (pos + 1)) - (uint)(1 << pos);
 
-            uint bitsToShift = ((uint) (1 << pos) - 1) & number;
+            uint bitsToShift = ((uint)(1 << pos) - 1) & number;
 
             number -= bitsToShift;
             uint shiftedBits = bitsToShift >> seqStart;
 
-            uint mask = ~(uint) 0 - (uint) (1 << pos) - 1;
+            uint mask = ~(uint)0 - (uint)(1 << pos) - 1;
             number &= mask;
             number += shiftedBits;
 
@@ -134,6 +135,22 @@ namespace CtCI
             }
 
             return bits;
+        }
+        #endregion
+
+        #region 5.6
+        /* Write a function to determine the number of bits you would need to flip to convert integer A to integer B */
+        public static int BitFlipsUntilEquality(uint a, uint b)
+        {
+            int flips = 0;
+
+            uint xor = a ^ b;
+            while (xor != 0)
+            {
+                flips++;
+                xor &= xor - 1;
+            }
+            return flips;
         }
         #endregion
     }

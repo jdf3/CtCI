@@ -38,12 +38,19 @@ namespace CtCI.Tests
         {
             Assert.AreEqual((uint)0b101000, GetNextWithSameBits((uint)0b100100), "case 1");
             Assert.AreEqual((uint)0b110001, GetNextWithSameBits((uint)0b101100), "case 2");
+            Assert.AreEqual((uint)0b1111_1111_1111_1111_1011_1111_1111_1111, GetNextWithSameBits((uint)0b1111_1111_1111_1111_0111_1111_1111_1111), "case 3");
         }
 
         [TestMethod]
         public void CountBitsTests()
         {
             Assert.AreEqual(24, CountBits(0b1111_1111_0000_1111_0000_1111_1111_1111));
+        }
+
+        [TestMethod]
+        public void BitFlipsUntilEqualityTests()
+        {
+            Assert.AreEqual(2, BitFlipsUntilEquality((uint)29, (uint)15));
         }
     }
 }
