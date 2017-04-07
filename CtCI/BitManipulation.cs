@@ -168,7 +168,7 @@ namespace CtCI
         #endregion
 
         #region 5.8
-        /* I don't feel this question is really worth my time... */
+        /* TODO I don't feel this question is really worth my time right now - moving on to OOP problems */
         #endregion
     }
 }
