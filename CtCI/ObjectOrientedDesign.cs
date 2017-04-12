@@ -151,40 +151,111 @@ namespace CtCI
          * (Obj o : circularArray) notation. */
         public class CircularArray<T> : IEnumerable<T>
         {
+            private readonly List<T> _list;
+            private int _position = 0;
+
+            private int RotatedIndex(int index) => (index + _position) % _list.Count;
+
+            public CircularArray()
+            {
+                _list = new List<T>();
+            }
+
+            public CircularArray(IEnumerable<T> items)
+            {
+                _list = new List<T>(items);
+            }
+
+            public void Rotate(int positions)
+            {
+                _position = (_position + positions) % _list.Count;
+            }
+
+            public void Insert(int index, T item)
+            {
+                int rotatedIndex = RotatedIndex(index);
+                if (rotatedIndex < _position)
+                {
+                    _position++;
+                }
+                _list.Insert(rotatedIndex, item);
+            }
+
+            public void Add(T item)
+            {
+                Insert(_position, item);
+                _position++;
+            }
+
+            public void RemoveAt(int index)
+            {
+                int rotatedIndex = RotatedIndex(index);
+                if (rotatedIndex < _position)
+                {
+                    _position--;
+                }
+                _list.RemoveAt(rotatedIndex);
+            }
+
+            public T this[int index]
+            {
+                get { return _list[RotatedIndex(index)]; }
+                set
+                {
+                    Insert(index, value);
+                }
+            }
+
+            public int Count => _list.Count;
+
             public IEnumerator<T> GetEnumerator()
             {
-                throw new NotImplementedException();
+                return new CircularArrayEnumerator<T>(this);
             }
 
             IEnumerator IEnumerable.GetEnumerator()
             {
                 return GetEnumerator();
             }
+        }
 
-            private class CircularArrayEnumerator : IEnumerator
+        private class CircularArrayEnumerator<T> : IEnumerator<T>
+        {
+            private int _currentPosition;
+            private readonly CircularArray<T> _circularArray;
+
+            public CircularArrayEnumerator(CircularArray<T> array)
             {
-                public bool MoveNext()
-                {
-                    throw new NotImplementedException();
-                }
-
-                public void Reset()
-                {
-                    throw new NotImplementedException();
-                }
-
-                public T Current { get; }
-
-                object IEnumerator.Current
-                {
-                    get { return Current; }
-                }
-
-                public void Dispose()
-                {
-                    throw new NotImplementedException();
-                }
+                _circularArray = array;
+                _currentPosition = -1;
             }
+
+            /// <summary>Advances the enumerator to the next element of the collection.</summary>
+            /// <returns>true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.</returns>
+            /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+            /// <filterpriority>2</filterpriority>
+            public bool MoveNext()
+            {
+                bool first = _currentPosition == -1;
+
+                _currentPosition = (_currentPosition + 1) % _circularArray.Count;
+
+                return first || _currentPosition != 0;
+            }
+
+            public void Reset()
+            {
+                _currentPosition = -1;
+            }
+
+            object IEnumerator.Current => Current;
+
+            public void Dispose()
+            {
+                // Nothing
+            }
+
+            public T Current => _circularArray[_currentPosition];
         }
         #endregion
     }

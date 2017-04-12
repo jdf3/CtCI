@@ -67,5 +67,30 @@ namespace CtCI.Tests
             Card newNewTop = deck.Peek();
             Assert.AreNotEqual(newTop, newNewTop);
         }
+
+        [TestMethod]
+        public void CircularArrayTests()
+        {
+            var circularArray = new CircularArray<int>(new []{1, 2, 3, 4});
+            Assert.AreEqual(1, circularArray[0]);
+            circularArray.Rotate(1);
+            Assert.AreEqual(2, circularArray[0]);
+            circularArray.Insert(0, 5);
+            Assert.AreEqual(5, circularArray[0]);
+            Assert.AreEqual(5, circularArray.Count);
+
+            List<int> list = new List<int>();
+            foreach (int item in circularArray)
+            {
+                list.Add(item);
+            }
+
+            Assert.AreEqual(5, list.Count);
+            Assert.AreEqual(5, list[0]);
+            Assert.AreEqual(2, list[1]);
+            Assert.AreEqual(3, list[2]);
+            Assert.AreEqual(4, list[3]);
+            Assert.AreEqual(1, list[4]);
+        }
     }
 }
