@@ -58,13 +58,13 @@ namespace CtCI.Tests
 
             Assert.IsFalse(deck.IsEmpty());
 
-            var top = deck.Peek();
+            Card top = deck.Peek();
             deck.Shuffle();
-            var newTop = deck.Peek();
+            Card newTop = deck.Peek();
             Assert.AreNotEqual(top, newTop);
 
             deck.Draw();
-            var newNewTop = deck.Peek();
+            Card newNewTop = deck.Peek();
             Assert.AreNotEqual(newTop, newNewTop);
         }
     }

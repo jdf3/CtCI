@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -141,7 +142,50 @@ namespace CtCI
 
             public Card Peek() => _deck[_deck.Count - 1];
         }
+        #endregion
 
+        #region 7.9
+        /* Implement a CircularArray class that supports an array-like data structure which
+         * can be efficiently rotated. If possible, the class should use a generic type
+         * (also called a template), and should support iteration via the standard for
+         * (Obj o : circularArray) notation. */
+        public class CircularArray<T> : IEnumerable<T>
+        {
+            public IEnumerator<T> GetEnumerator()
+            {
+                throw new NotImplementedException();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+
+            private class CircularArrayEnumerator : IEnumerator
+            {
+                public bool MoveNext()
+                {
+                    throw new NotImplementedException();
+                }
+
+                public void Reset()
+                {
+                    throw new NotImplementedException();
+                }
+
+                public T Current { get; }
+
+                object IEnumerator.Current
+                {
+                    get { return Current; }
+                }
+
+                public void Dispose()
+                {
+                    throw new NotImplementedException();
+                }
+            }
+        }
         #endregion
     }
 }
