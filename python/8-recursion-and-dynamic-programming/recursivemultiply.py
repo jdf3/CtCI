@@ -17,3 +17,17 @@ def mult(a, b):
 print("100 x 16 =", mult(100, 16), "\n(Should be", 100*16, ")")
 print("653 x 242 =", mult(653, 242), "\n(Should be", 653*242, ")")
     
+def multr(a, b):
+  def h(l, g):
+    if l == 0: return 0
+    result = 0
+    if l & 1:
+      result += g
+    return result + (h(l >> 1, g) << 1)
+
+  small, big = sorted([a, b])
+  return h(small, big)
+
+print("100 x 16 =", multr(100, 16), "\n(Should be", 100*16, ")")
+print("653 x 242 =", multr(653, 242), "\n(Should be", 653*242, ")")
+
