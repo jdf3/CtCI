@@ -31,3 +31,5 @@ def multr(a, b):
 print("100 x 16 =", multr(100, 16), "\n(Should be", 100*16, ")")
 print("653 x 242 =", multr(653, 242), "\n(Should be", 653*242, ")")
 
+# for improvement, think about how this performs for (e.g.) powers of 2, or
+# powers of 2 minus 1. Can I use subtraction somehow?
