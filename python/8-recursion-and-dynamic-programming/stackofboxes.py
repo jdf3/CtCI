@@ -7,13 +7,17 @@
 def stackofboxes(stack):
   memo = [-1]*len(stack)
   def r(stack, stackpos, basewidth, baseheight, basedepth):
-    if memo[stackpos] != -1: return memo[stackpos]
     if stackpos >= len(stack): return 0
     poss = [0]
     for i in range(stackpos, len(stack)):
       w, h, d = stack[i]
       if w < basewidth and h < baseheight and d < basedepth:
-        poss.append(h + r(stack, i + 1, w, h, d))
+        if memo[i] != -1:
+          result = memo[i]
+        else:
+          memo[i] = r(stack, i+1, w, h, d)
+          result = memo[i]
+        poss.append(h + result)
 
     return max(poss)
 
