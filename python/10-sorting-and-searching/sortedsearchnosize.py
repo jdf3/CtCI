@@ -26,26 +26,15 @@ def sorted_no_size(listy, n):
     m = (l + r) // 2
     if a.element_at(m) == n:
       return m
-    elif a.element_at(m) > n:
+    elif a.element_at(m) > n or a.element_at(m) == -1:
       return binary_search(a, n, l, m - 1)
     else:
       return binary_search(a, n, m + 1, r)
 
-  def find_first_negone(a, l, r):
-    if r - l < 2:
-      if a.element_at(l) == -1: return l
-      else: return r
-    m = (l + r) // 2
-    if a.element_at(m) == -1:
-      return find_first_negone(a, l, m)
-    else:
-      return find_first_negone(a, m + 1, r)
-
   i = 1
   while listy.element_at(i) != -1:
     i <<= 1
-  length = find_first_negone(listy, i >> 1, i)
 
-  return binary_search(listy, n, 0, length - 1)
+  return binary_search(listy, n, 0, i - 1)
 
 print(sorted_no_size(Listy([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]), 13))
