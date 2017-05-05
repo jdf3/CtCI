@@ -1,0 +1,43 @@
+"Given an input file with four billion non-negative integers, provide an
+algorithm to generate an integer that is not contained in the file. Assume you
+have 1 GB of memory available for this task.
+
+FOLLOW UP
+
+What if you have only 10 MB of memory? Assume that all the values are distinct
+and we now have no more than one billion non-negative integers."
+
+4B is about 2^32, which means (assuming the max value is about 2^32 or 2^31,
+depending on whether our ints are signed are unsigned, and 32-bit rather than
+long), we are likely to have a decent amount of duplicates.
+
+1 GB of memory means about 8 billion bits - that's enough to hold these all in
+a bit vector, initialized to 0. Then, we scan the file (open a stream) and set
+the value's corresponding position to 1 in the bit vector. Upon completion, we
+can scan through the bit-vector and find the first non-zero position.
+
+For the follow up, we only have about 80 million bits for one billion
+non-negative integers, so we can't quite use the same approach.
+
+But it's not too tragic. We can start out with an (approximately)
+80-million-bit vector, initialized to zero, and if the number is from 1 to
+80,000,000, set the corresponding position in the vector to 1. Then we can scan
+and look for the first 0.
+
+Since there are only one billion non-negative integers, the odds that any given
+integer is taken is fairly high, so the first run should be sufficient to
+discover an unused integer (i.e., in the 1-80,000,000 range).
+
+But in the case it isn't, we can continue, and have a new 80-million-bit vector
+represent numbers in the 80,000,001 to 160,000,000 range.
+
+But if *really* everything in the 1-80,000,000 range is taken, our input
+probably isn't very random. We should try some bigger numbers - maybe near the
+upper range of the integer limit?
+
+Alternatively, we can have a not-quite-bit vector work for us - make a bucket
+of *shorts* - the first position representing values from 1-65536, the next
+representing values from 65537-131072, and so on. We know that at least one
+bucket must not have 256 numbers - so upon scanning once, we can now just look
+in that bucket, using a bit vector as we did before. This is basically the
+pigeonhole principle at work.
