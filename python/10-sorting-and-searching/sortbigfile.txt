@@ -1,0 +1,8 @@
+"Imagine you have a 20 GB file with one string per line. Explain how you would
+sort the file."
+
+20 GB is too large to fit in memory. We need to sort chunk by chunk. Choose an
+algorithm with good asymptotics to sort, say in 1.25GB chunks. Then we can
+merge each of these without having to read the whole of the chunk - we can open
+a file stream and read line-by-line, and write them to the correct, new
+location, perhaps in 1.25GB memory chunks. We could do this in-place if needed.
